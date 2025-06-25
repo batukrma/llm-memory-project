@@ -1,10 +1,10 @@
 from transformers import pipeline
-from langchain_community.llms import HuggingFacePipeline  # yeni paket
+from langchain_community.llms import HuggingFacePipeline  
 from langchain.memory import ConversationSummaryMemory
 from langchain.chains import ConversationChain
 
 def main():
-    print("Bot başlatıldı. Çıkmak için 'çık' yazın.\n")
+    print("Bot started. Type 'exit' to quit.\n")
 
     model_name = "distilgpt2"
 
@@ -20,18 +20,18 @@ def main():
 
     llm = HuggingFacePipeline(pipeline=pipe)
 
-    memory = ConversationSummaryMemory(llm=llm)  # özetleme memory
+    memory = ConversationSummaryMemory(llm=llm)  
 
     conversation = ConversationChain(llm=llm, memory=memory, verbose=False)
 
     while True:
-        user_input = input("Sen: ")
-        if user_input.lower() == "çık":
-            print("Görüşürüz!")
+        user_input = input("User: ")
+        if user_input.lower() == "exit":
+            print("Goodbye!")
             break
-        if user_input.lower() == "özetle":
-            summary = memory.load_memory_variables({}).get("history", "Özet bulunamadı.")
-            print("Bot (Özet):", summary)
+        if user_input.lower() == "summary":
+            summary = memory.load_memory_variables({}).get("history", "No summary found.")
+            print("Bot (Summary):", summary)
             continue
         response = conversation.predict(input=user_input)
         print("Bot:", response)
